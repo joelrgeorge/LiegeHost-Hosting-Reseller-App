@@ -1,6 +1,4 @@
-// controllers/enomController.js
-
-const enomService = require('../services/enomService');
+const enomService = process.env.NODE_ENV === 'test' ? require('../services/enomMockService') : require('../services/enomService');
 const mongoService = require('../services/mongoService');
 
 const fetchDomainInfo = async (req, res) => {
@@ -10,12 +8,10 @@ const fetchDomainInfo = async (req, res) => {
         const domainInfo = await enomService.fetchDomainInfo(name);
         console.log('Domain info fetched:', domainInfo);
         await mongoService.logResponse('enom', { action: 'fetchDomainInfo', name, domainInfo });
-        console.log('Response logged to MongoDB for fetchDomainInfo');
         res.json({ domainInfo });
     } catch (error) {
         console.error('Error fetching domain info:', error);
         await mongoService.logResponse('enom', { action: 'fetchDomainInfo', name, error: error.message });
-        console.log('Error response logged to MongoDB for fetchDomainInfo');
         res.status(500).json({ error: error.message });
     }
 };
@@ -54,11 +50,11 @@ const handleEnomRequest = async (req, res) => {
     try {
         console.log('Handling generic ENOM request');
         const response = await enomService.makeRequest(req.body);
-        await mongoService.logResponse('enom', response); // Log response to MongoDB
+        await mongoService.logResponse('enom', response);
         res.status(200).json(response);
     } catch (error) {
         console.error('Error handling ENOM request:', error);
-        await mongoService.logResponse('enom', { error: error.message }); // Log error to MongoDB
+        await mongoService.logResponse('enom', { error: error.message });
         res.status(500).json({ error: error.message });
     }
 };

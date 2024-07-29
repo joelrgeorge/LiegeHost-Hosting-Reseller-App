@@ -1,35 +1,55 @@
-// services/enomService.js
+const axios = require('axios');
 
-const { fetchDomainInfo, registerDomain, transferDomain } = require('../../mocks/enomMocks');
+const ENOM_API_URL = process.env.ENOM_API_URL;
+const ENOM_API_KEY = process.env.ENOM_API_KEY;
+const ENOM_API_USERNAME = process.env.ENOM_API_USERNAME;
 
 const enomService = {
-  fetchDomainInfo: async (domain) => {
+  fetchDomainInfo: async (name) => {
     try {
-      console.log(`enomService: Fetching domain info for ${domain}`);  // Debug log
-      const response = await fetchDomainInfo(domain);
-      console.log(`enomService: Fetched domain info: ${JSON.stringify(response)}`);  // Debug log
-      return response;
+      const response = await axios.get(`${ENOM_API_URL}/domain`, {
+        headers: { 'Authorization': `Bearer ${ENOM_API_KEY}` },
+        params: { name, username: ENOM_API_USERNAME },
+      });
+      return response.data;
     } catch (error) {
       console.error('Error fetching domain info:', error);
-      return undefined;
+      throw error;
     }
   },
   registerDomain: async (domain, email) => {
     try {
-      return await registerDomain(domain, email);
+      const response = await axios.post(`${ENOM_API_URL}/register`, { domain, email }, {
+        headers: { 'Authorization': `Bearer ${ENOM_API_KEY}` },
+      });
+      return response.data;
     } catch (error) {
       console.error('Error registering domain:', error);
-      return undefined;
+      throw error;
     }
   },
   transferDomain: async (domain, email) => {
     try {
-      return await transferDomain(domain, email);
+      const response = await axios.post(`${ENOM_API_URL}/transfer`, { domain, email }, {
+        headers: { 'Authorization': `Bearer ${ENOM_API_KEY}` },
+      });
+      return response.data;
     } catch (error) {
       console.error('Error transferring domain:', error);
-      return undefined;
+      throw error;
     }
-  }
+  },
+  makeRequest: async (body) => {
+    try {
+      const response = await axios.post(`${ENOM_API_URL}/generic`, body, {
+        headers: { 'Authorization': `Bearer ${ENOM_API_KEY}` },
+      });
+      return response.data;
+    } catch (error) {
+      console.error('Error making ENOM request:', error);
+      throw error;
+    }
+  },
 };
 
 module.exports = enomService;

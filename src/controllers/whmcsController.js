@@ -1,6 +1,4 @@
-// whmcsController.js
-
-const whmcsService = require('../services/whmcsService');
+const whmcsService = process.env.NODE_ENV === 'test' ? require('../services/whmcsMockService') : require('../services/whmcsService');
 const mongoService = require('../services/mongoService');
 
 exports.getClient = async (req, res) => {

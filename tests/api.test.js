@@ -1,6 +1,9 @@
 const request = require('supertest'); // Add this import
 const app = require('../src/app'); // Ensure this path is correct
 
+// Ensure the environment is set to test
+process.env.NODE_ENV = 'test';
+
 describe('WHMCS Service API', () => {
   test('GET /whmcs/client should return client details', async () => {
     const response = await request(app).get('/whmcs/client?id=1');
