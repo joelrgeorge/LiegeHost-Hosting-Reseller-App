@@ -1,4 +1,4 @@
-// src/services/whmcsService.js
+// src/services/whmcsMockService.js
 const { fetchClientDetails, createClient, updateClient } = require('../../mocks/whmcsMocks');
 
 const whmcsService = {

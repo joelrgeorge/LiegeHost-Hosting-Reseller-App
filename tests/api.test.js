@@ -5,11 +5,11 @@ const app = require('../src/app'); // Ensure this path is correct
 process.env.NODE_ENV = 'test';
 
 describe('WHMCS Service API', () => {
-  test('GET /whmcs/client should return client details', async () => {
-    const response = await request(app).get('/whmcs/client?id=1');
+  test('GET /whmcs/client/:id should return client details', async () => {
+    const response = await request(app).get('/whmcs/client/1'); // Correct path with parameter
     expect(response.status).toBe(200);
     expect(response.body).toHaveProperty('clientDetails');
-  }, 10000); // Increase timeout to 10000 ms
+  }, 10000);
 
   test('POST /whmcs/client should create a client', async () => {
     const response = await request(app)
@@ -17,7 +17,7 @@ describe('WHMCS Service API', () => {
       .send({ name: 'John Doe' });
     expect(response.status).toBe(201);
     expect(response.body).toHaveProperty('clientCreationStatus');
-  }, 10000); // Increase timeout to 10000 ms
+  }, 10000);
 
   test('PUT /whmcs/client should update a client', async () => {
     const response = await request(app)
@@ -25,7 +25,7 @@ describe('WHMCS Service API', () => {
       .send({ id: 1, name: 'Jane Doe' });
     expect(response.status).toBe(200);
     expect(response.body).toHaveProperty('clientUpdateStatus');
-  }, 10000); // Increase timeout to 10000 ms
+  }, 10000);
 });
 
 describe('ENOM Service API', () => {

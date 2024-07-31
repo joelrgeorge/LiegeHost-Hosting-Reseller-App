@@ -1,8 +1,8 @@
-const whmcsService = process.env.NODE_ENV === 'test' ? require('../services/whmcsMockService') : require('../services/whmcsService');
+let whmcsService = process.env.NODE_ENV === 'test' ? require('../services/whmcsMockService') : require('../services/whmcsService');
 const mongoService = require('../services/mongoService');
 
-exports.getClient = async (req, res) => {
-  const { id } = req.query;
+exports.getClientDetails = async (req, res) => {
+  const { id } = req.params; // Use `req.params` for route parameters
   try {
     console.log(`Fetching client details for ID ${id}`);
     const clientDetails = await whmcsService.fetchClientDetails(Number(id));

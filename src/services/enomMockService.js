@@ -1,4 +1,4 @@
-// services/enomService.js
+// services/enomMockService.js
 
 const { fetchDomainInfo, registerDomain, transferDomain } = require('../../mocks/enomMocks');
 
